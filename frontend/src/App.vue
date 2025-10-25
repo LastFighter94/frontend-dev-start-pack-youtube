@@ -7,7 +7,7 @@
     <div class="items">
       <div v-for="item in items" :key="item.id" class="card">
         <img :src="item.img" :alt="item.name" />
-        <p>{{ item.name }}</p>
+        <p>{{ item.name }} test</p>
       </div>
     </div>
   </div>
