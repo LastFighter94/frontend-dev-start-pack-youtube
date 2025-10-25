@@ -1,0 +1,80 @@
+npm init vue@latest fastapi-front
+cd fastapi-front
+npm install
+
+Убираем директорию fastapi-front и кидаем все в общую папку
+
+
+
+Замена в app.vue
+
+<template>
+  <div class="app">
+    <h1>FastAPI Items</h1>
+
+    <button @click="fetchItems">Обновить</button>
+
+    <div class="items">
+      <div v-for="item in items" :key="item.id" class="card">
+        <img :src="item.img" :alt="item.name" />
+        <p>{{ item.name }}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+
+const items = ref([]);
+
+async function fetchItems() {
+  try {
+    const res = await fetch("http://localhost:8000/items");
+    items.value = await res.json();
+  } catch (err) {
+    console.error("Ошибка при запросе:", err);
+  }
+}
+
+onMounted(fetchItems);
+</script>
+
+<style scoped>
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+button {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  background: #42b983;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.items {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 150px;
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 64px;
+  height: 64px;
+}
+</style>
